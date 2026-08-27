@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="connect-src 'self' data: blob: https://rats-server-js-6dhr.onrender.com wss://rats-server-js-6dhr.onrender.com;">
+<title>where the blobsx and the ploppers kill</title>
+<meta name="description" content="kill all the bolby wolpys with peak dbd perks no nerf all buffs no rez.">
+
+<!-- Open Graph (Discord, Facebook, etc.) -->
+<meta property="og:title" content="R.A.T.S">
+<meta property="og:description" content="kill all the bolby wolpys with peak dbd perks no nerf all buffs no rez.">
+<meta property="og:image" content="https://rats-game.neocities.org/embed.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rats-game.neocities.org/">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="R.A.T.S">
+<meta name="twitter:description" content="kill all the bolby wolpys with peak dbd perks no nerf all buffs no rez.">
+<meta name="twitter:image" content="https://rats-game.neocities.org/embed.png">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  @font-face {
+    font-family: 'LowerResolution';
+    src: url('fonts/LowerResolution.ttf') format('truetype');
+  }
+
+  body, html {
+    margin: 0;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-family: 'LowerResolution', sans-serif;
+    padding-top: 160px;
+    box-sizing: border-box;
+  }
+
+  #panorama-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  #logo {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    width: 300px;
+    height: auto;
+    transform: translateX(-50%);
+    z-index: 10;
+    animation: sway 3s ease-in-out infinite;
+  }
+
+  @keyframes sway {
+    0%, 100% { transform: translateX(-50%) translateY(0px); }
+    50%      { transform: translateX(-50%) translateY(15px); }
+  }
+
+  a {
+    color: beige;
+    transition: color 0.2s ease;
+  }
+
+  a:hover {
+    color: #8b0000;
+  }
+
+  .page-row {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .content-box {
+    position: relative;
+    margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.25);
+    color: white;
+    padding: 50px 60px;
+    border-radius: 0px;
+    text-align: center;
+    max-width: 700px;
+    z-index: 5;
+  }
+
+  .tagline {
+    font-size: 2em;
+    margin: 0 0 15px 0;
+  }
+
+  .description {
+    font-size: 1.3em;
+    margin: 0 0 25px 0;
+    opacity: 0.9;
+  }
+
+  .itch-link {
+    font-size: 1.6em;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 15px;
+  }
+
+  .itch-link i {
+    margin-right: 10px;
+  }
+
+  .download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.4em;
+    text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.12);
+    border: 1px solid beige;
+    padding: 10px 22px;
+    border-radius: 0px;
+    margin-bottom: 25px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .download-btn:hover {
+    background-color: rgba(139, 0, 0, 0.35);
+    border-color: #8b0000;
+  }
+
+  .credits {
+    font-size: 1em;
+    opacity: 0.7;
+    margin: 0;
+  }
+
+  .server-info-box {
+    background-color: rgba(0, 0, 0, 0.25);
+    color: white;
+    padding: 30px 30px;
+    border-radius: 0px;
+    text-align: left;
+    width: 260px;
+    flex-shrink: 0;
+    z-index: 5;
+    font-size: 1.15em;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+  }
+
+  .server-info-box h3 {
+    margin: 0 0 14px 0;
+    font-size: 1.35em;
+    font-weight: normal;
+    border-bottom: 1px solid beige;
+    padding-bottom: 10px;
+  }
+
+  .server-info-box .stat-line {
+    margin: 0 0 10px 0;
+    opacity: 0.9;
+  }
+
+  .server-info-box .stat-value {
+    color: #ffe600;
+  }
+
+  .server-info-box .room-list {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(245, 245, 220, 0.3);
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .server-info-box .room-entry {
+    font-size: 0.9em;
+    opacity: 0.85;
+    margin: 0 0 8px 0;
+  }
+
+  .server-info-box .no-rooms {
+    font-size: 0.9em;
+    opacity: 0.6;
+    font-style: italic;
+  }
+
+  @media (max-width: 1100px) {
+    .server-info-box {
+      display: none;
+    }
+    .page-row {
+      justify-content: center;
+    }
+  }
+
+  .beta-banner {
+    font-size: 2.1em;
+    color: yellow;
+    margin: 0 0 20px 0;
+    display: inline-block;
+    animation: shake 0.25s infinite;
+  }
+
+  @keyframes shake {
+    0%   { transform: translate(0px, 0px) rotate(0deg); }
+    20%  { transform: translate(-2px, 1px) rotate(-1deg); }
+    40%  { transform: translate(2px, -1px) rotate(1deg); }
+    60%  { transform: translate(-1px, 2px) rotate(0deg); }
+    80%  { transform: translate(1px, -2px) rotate(1deg); }
+    100% { transform: translate(0px, 0px) rotate(0deg); }
+  }
+
+  .gif-gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 25px 0;
+  }
+
+  .gif-gallery img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid beige;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="panorama-bg"></canvas>
+
+<img id="logo" src="logo.png" alt="logo">
+
+<div class="page-row">
+
+  <div class="server-info-box" id="server-info-box">
+    <h3>Server Status</h3>
+    <p class="stat-line">Players online: <span class="stat-value" id="stat-players">--</span></p>
+    <p class="stat-line">Active rooms: <span class="stat-value" id="stat-rooms">--</span></p>
+    <div class="room-list" id="room-list">
+      <p class="no-rooms">connecting...</p>
+    </div>
+  </div>
+
+  <div class="content-box">
+    <p class="tagline">where the blobsx and the ploppers kill</p>
+    <p class="description">kill all the bolby wolpys with peak dbd perks no nerf all buffs no rez.</p>
+
+    <p class="beta-banner">THIS GAME IS IN BETA V1.2</p>
+
+    <div class="gif-gallery">
+      <img src="gifs/gameplay1.gif" alt="gameplay clip 1">
+      <img src="gifs/gameplay2.gif" alt="gameplay clip 2">
+      <img src="gifs/gameplay3.gif" alt="gameplay clip 3">
+      <img src="gifs/gameplay4.gif" alt="gameplay clip 4">
+    </div>
+
+    <br>
+    <a class="download-btn" id="download-btn" href="https://github.com/GalaxybeamX/RATS-versions/releases/latest" target="_blank">
+      <i id="os-icon" class="fa-brands fa-windows"></i>
+      <span id="os-label">Download for Windows</span>
+    </a>
+    <br>
+    <p class="credits">Made By: Galaxybeam / Anteger / Venustorian / Jayy</p>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+<script>
+  // ---- Point this at your running RATS server ----
+  const SERVER_URL = "https://rats-server-js-6dhr.onrender.com";
+  // --------------------------------------------------
+
+  const statPlayers = document.getElementById('stat-players');
+  const statRooms = document.getElementById('stat-rooms');
+  const roomList = document.getElementById('room-list');
+
+  const statsSocket = io(SERVER_URL, {
+    transports: ['websocket'],
+    reconnection: true,
+  });
+
+  statsSocket.on('connect', () => {
+    roomList.innerHTML = '<p class="no-rooms">no active rooms</p>';
+  });
+
+  statsSocket.on('connect_error', () => {
+    statPlayers.textContent = '?';
+    statRooms.textContent = '?';
+    roomList.innerHTML = '<p class="no-rooms">offline</p>';
+  });
+
+  statsSocket.on('disconnect', () => {
+    statPlayers.textContent = '?';
+    statRooms.textContent = '?';
+    roomList.innerHTML = '<p class="no-rooms">disconnected</p>';
+  });
+
+  statsSocket.on('server_stats', (data) => {
+    statPlayers.textContent = data.connected_players;
+    statRooms.textContent = data.room_count;
+
+    const roomNames = Object.keys(data.rooms || {});
+
+    if (roomNames.length === 0) {
+      roomList.innerHTML = '<p class="no-rooms">no active rooms</p>';
+      return;
+    }
+
+    roomList.innerHTML = roomNames.map((roomName) => {
+      const playerIds = data.rooms[roomName] || [];
+      const roomPlayers = data.rooms_data && data.rooms_data[roomName] ? data.rooms_data[roomName] : {};
+      const usernames = playerIds.map((id) => (roomPlayers[id] && roomPlayers[id].username) || 'player');
+      return `<p class="room-entry">${escapeHtml(roomName)} (${playerIds.length}) — ${escapeHtml(usernames.join(', '))}</p>`;
+    }).join('');
+  });
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = String(str);
+    return div.innerHTML;
+  }
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+  // ---- Fill in your panorama filenames here ----
+  const panoramaFiles = [
+    'bellyban_office.png',
+    'bunker.png',
+    'testmap.png',
+    'backrooms.png'
+  ];
+  // -----------------------------------------------
+
+  const randomFile = panoramaFiles[Math.floor(Math.random() * panoramaFiles.length)];
+  const panoramaPath = 'panoramas/' + randomFile;
+
+  const canvas = document.getElementById('panorama-bg');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+
+  // Cap pixel ratio — this is the #1 cause of freezes/slowdowns on high-res
+  // monitors, since devicePixelRatio can be 2-3x and multiplies render cost.
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.set(0, 0, 0);
+
+  // Sphere with texture on the INSIDE. Lower segment counts than a typical
+  // demo (48x32 instead of 60x40) — plenty smooth for a full-screen bg,
+  // cheaper on the GPU.
+  const geometry = new THREE.SphereGeometry(500, 48, 32);
+  geometry.scale(-1, 1, 1); // flip so texture faces inward
+
+  const loader = new THREE.TextureLoader();
+  loader.load(
+    panoramaPath,
+    (texture) => {
+      // Constrain texture size so a huge source PNG (e.g. 8K) doesn't choke
+      // decode/upload. Three r128 doesn't auto-downscale, so we do it here
+      // via an offscreen canvas if the image is larger than we need.
+      const maxDim = 4096;
+      if (texture.image && (texture.image.width > maxDim || texture.image.height > maxDim)) {
+        const scale = maxDim / Math.max(texture.image.width, texture.image.height);
+        const canvasEl = document.createElement('canvas');
+        canvasEl.width = texture.image.width * scale;
+        canvasEl.height = texture.image.height * scale;
+        const ctx = canvasEl.getContext('2d');
+        ctx.drawImage(texture.image, 0, 0, canvasEl.width, canvasEl.height);
+        texture.image = canvasEl;
+        texture.needsUpdate = true;
+      }
+
+      texture.minFilter = THREE.LinearFilter; // avoids mipmap generation cost
+      texture.generateMipmaps = false;
+
+      const material = new THREE.MeshBasicMaterial({ map: texture });
+      const sphere = new THREE.Mesh(geometry, material);
+      scene.add(sphere);
+      animate();
+    },
+    undefined,
+    (err) => {
+      console.error('Failed to load panorama:', panoramaPath, err);
+    }
+  );
+
+  // Slowly rotate the camera to look around
+  let lon = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+
+    lon += 0.01; // rotation speed — increase/decrease to taste
+    const phi = THREE.MathUtils.degToRad(90);
+    const theta = THREE.MathUtils.degToRad(lon);
+
+    const target = new THREE.Vector3(
+      500 * Math.sin(phi) * Math.cos(theta),
+      500 * Math.cos(phi),
+      500 * Math.sin(phi) * Math.sin(theta)
+    );
+    camera.lookAt(target);
+
+    renderer.render(scene, camera);
+  }
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  // ---- OS detection for download button ----
+  function detectOS() {
+    const platform = navigator.userAgent || navigator.platform || '';
+    if (/Mac/i.test(platform)) return 'mac';
+    if (/Linux/i.test(platform) && !/Android/i.test(platform)) return 'linux';
+    if (/Win/i.test(platform)) return 'windows';
+    return 'windows'; // fallback
+  }
+
+  const os = detectOS();
+  const osIcon = document.getElementById('os-icon');
+  const osLabel = document.getElementById('os-label');
+
+  const osConfig = {
+    windows: { icon: 'fa-windows', label: 'Download for Windows' },
+    mac:     { icon: 'fa-apple',   label: 'Download for Mac' },
+    linux:   { icon: 'fa-linux',   label: 'Download for Linux' }
+  };
+
+  osIcon.classList.add(osConfig[os].icon);
+  osLabel.textContent = osConfig[os].label;
+</script>
+
+</body>
+</html>
